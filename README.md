@@ -1,3 +1,7 @@
 # Practice assignment: Discussion forum
 
-Start the development environment by running the ./start-script.sh from the root directory of the repository.
+# Instructions:
+
+- Clone this repository
+- Build the project by running the build script ./scripts/build.sh from the root directory of the repository.
+- Start the development environment by running the ./scripts/start.sh from the root directory of the repository.
