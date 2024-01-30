@@ -4,7 +4,7 @@ echo "Starting database..."
 docker compose up -d
 echo "Starting backend..."
 cd backend
-dotnet watch run --launch-profile https &
+dotnet watch run &
 echo "Starting frontend..."
 cd ../frontend
-npm install && npm run dev
+npm run dev
