@@ -1,10 +1,10 @@
-import React from "react";
+import { LoginPage } from "./views/Login";
 
 const App = () => {
   return (
-    <>
-      <div>Discussion forum</div>
-    </>
+    <div className="h-screen">
+      <LoginPage />
+    </div>
   );
 };
 
