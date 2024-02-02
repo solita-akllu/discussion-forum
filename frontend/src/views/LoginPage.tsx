@@ -17,7 +17,7 @@ export const LoginPage = () => {
 
   return (
     <div className="flex h-screen items-center justify-center ">
-      <div className="flex h-2/5 w-1/5 flex-col rounded-lg bg-cyan-400 p-10">
+      <div className="flex min-h-max min-w-max flex-col rounded-lg bg-cyan-400 p-10">
         <h3 className="text-center text-3xl font-semibold">
           Sign in to discussion forum
         </h3>
