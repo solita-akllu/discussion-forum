@@ -1,15 +1,18 @@
 import { useRef } from "react";
 import { InputField } from "../components/InputField";
 import { GoDiscussionClosed } from "react-icons/go";
+import { useNavigate } from "react-router-dom";
 
 export const LoginPage = () => {
   const email = useRef<string>("");
   const password = useRef<string>("");
+  const navigate = useNavigate();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log("Email: ", email.current);
     console.log("Password: ", password.current);
+    navigate("/topic");
   };
 
   return (
