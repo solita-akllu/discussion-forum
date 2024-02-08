@@ -1,9 +1,21 @@
 using Microsoft.EntityFrameworkCore;
 using DiscussionForum.Data;
 
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      policy =>
+                      {
+                          policy
+                            .WithOrigins("http://localhost:5173")
+                            .AllowAnyMethod()
+                            .AllowAnyHeader();
+                      });
+});
 
 builder.Services.AddControllers();
 builder.Services.AddDbContext<DiscussionForumContext>(opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -22,6 +34,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseHsts();
+app.UseCors(MyAllowSpecificOrigins);
 
 app.UseAuthorization();
 
