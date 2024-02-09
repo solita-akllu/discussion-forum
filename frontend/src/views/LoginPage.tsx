@@ -1,29 +1,18 @@
 import { useRef, useState } from "react";
 import { InputField } from "../components/InputField";
 import { GoDiscussionClosed } from "react-icons/go";
-import { useNavigate } from "react-router-dom";
-import { login } from "../services/Authentication";
+import { useAuthContext } from "../contexts/AuthContext";
 
 export const LoginPage = () => {
-  const [errorMessage, setErrorMessage] = useState<string>();
+  const { login } = useAuthContext();
   const username = useRef<string>("");
   const password = useRef<string>("");
-  const navigate = useNavigate();
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log("Username: ", username.current);
     console.log("Password: ", password.current);
-
-    try {
-      const user = await login({ username: username.current });
-      console.log(user);
-      navigate("/topic");
-    } catch (error) {
-      console.error(error);
-      setErrorMessage("Wrong username or password");
-      setTimeout(() => setErrorMessage(undefined), 5000);
-    }
+    login(username.current);
   };
 
   return (
@@ -33,9 +22,6 @@ export const LoginPage = () => {
           Sign in to discussion forum
         </h3>
         <GoDiscussionClosed className="my-6 self-center" size={36} />
-        {errorMessage && (
-          <span className="text-center text-red-600">{errorMessage}</span>
-        )}
         <form onSubmit={handleSubmit} className="flex flex-col gap-y-6 px-16">
           <InputField
             type="text"
