@@ -19,20 +19,21 @@ namespace backend.Controllers
     public IActionResult Login([FromBody] LoginModel login)
     {
       Console.WriteLine($"Login username: {login.Username}");
+      var user = GetUser(login.Username);
 
-      if (IsValidUser(login.Username))
+      if (user != null)
       {
-        return Ok("Success");
+        return Ok(user);
       }
 
       return Unauthorized("Wrong username or password");
     }
 
-    private bool IsValidUser(string username)
+    private Account? GetUser(string username)
     {
       var account = _context.Accounts.FirstOrDefault(a => a.Name == username);
       Console.WriteLine($"User login: ID: {account?.Id.ToString() ?? "not found"}, name: {account?.Name}");
-      return account != null;
+      return account;
     }
 
   }
