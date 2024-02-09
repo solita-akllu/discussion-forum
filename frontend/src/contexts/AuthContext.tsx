@@ -6,11 +6,13 @@ import { useNavigate } from "react-router-dom";
 type AuthContextType = {
   user: Account | null;
   login: (username: string) => void;
+  logout: () => void;
 };
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
   login: () => {},
+  logout: () => {},
 });
 
 export const useAuthContext = () => useContext(AuthContext);
@@ -35,8 +37,15 @@ export const AuthContextProvider = ({
     }
   };
 
+  const handleLogout = () => {
+    setUser(null);
+    navigate("/");
+  };
+
   return (
-    <AuthContext.Provider value={{ user, login: handleLogin }}>
+    <AuthContext.Provider
+      value={{ user, login: handleLogin, logout: handleLogout }}
+    >
       {children}
     </AuthContext.Provider>
   );
