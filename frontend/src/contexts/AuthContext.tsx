@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { Account } from "../types/account";
 import { login } from "../services/Authentication";
 import { useNavigate } from "react-router-dom";
@@ -25,12 +25,39 @@ export const AuthContextProvider = ({
   const [user, setUser] = useState<Account | null>(null);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const loggedUser = window.sessionStorage.getItem("loggedUser");
+    if (loggedUser) {
+      try {
+        const user: Account = JSON.parse(loggedUser);
+        if (
+          !user ||
+          typeof user.id !== "number" ||
+          typeof user.name !== "string"
+        ) {
+          removeUserFromStorage();
+          return;
+        }
+        setUser(user);
+        navigate("/topic");
+      } catch (error) {
+        console.error(error);
+        removeUserFromStorage();
+      }
+    }
+  }, []);
+
+  const removeUserFromStorage = () => {
+    window.sessionStorage.removeItem("loggedUser");
+  };
+
   const handleLogin = async (username: string) => {
     try {
       const user = await login({ username });
       console.log(user);
       setUser(user);
       navigate("/topic");
+      window.sessionStorage.setItem("loggedUser", JSON.stringify(user));
     } catch (error) {
       console.error(error);
       alert("Wrong username or password");
@@ -40,6 +67,7 @@ export const AuthContextProvider = ({
   const handleLogout = () => {
     setUser(null);
     navigate("/");
+    removeUserFromStorage();
   };
 
   return (
