@@ -3,7 +3,7 @@ namespace DiscussionForum.Models
   public class Account
   {
     public int Id { get; set; }
-    public string Name { get; set; } = string.Empty;
+    public required string Name { get; set; }
 
     public ICollection<Topic> Topics = new List<Topic>();
   }
