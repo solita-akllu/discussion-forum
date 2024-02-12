@@ -23,9 +23,21 @@ namespace backend.Controllers
 
         // GET: api/Topic
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Topic>>> GetTopics()
+        public async Task<ActionResult<IEnumerable<TopicDto>>> GetTopics()
         {
-            return await _context.Topics.ToListAsync();
+            var topics = await _context.Topics.Select(topic => new TopicDto
+            {
+                Id = topic.Id,
+                Title = topic.Title,
+                AccountId = topic.AccountId,
+                MessageCount = topic.Messages.Count(),
+                TimeOfLastMessage = topic.Messages
+                    .OrderByDescending(m => m.Timestamp)
+                    .Select(m => m.Timestamp.ToString("dd-MM-yyyy HH:mm"))
+                    .FirstOrDefault()
+            }).ToListAsync();
+
+            return topics.OrderByDescending(t => t.TimeOfLastMessage ?? string.Empty).ToList();
         }
 
         // GET: api/Topic/5
@@ -104,5 +116,14 @@ namespace backend.Controllers
         {
             return _context.Topics.Any(e => e.Id == id);
         }
+    }
+
+    public class TopicDto
+    {
+        public int Id { get; set; }
+        public required string Title { get; set; }
+        public int AccountId { get; set; }
+        public int MessageCount { get; set; }
+        public string? TimeOfLastMessage { get; set; }
     }
 }
