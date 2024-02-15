@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using DiscussionForum.Models;
 using DiscussionForum.Data;
+using backend.Requests;
 
 namespace backend.Controllers
 {
@@ -16,7 +17,7 @@ namespace backend.Controllers
     }
 
     [HttpPost("login")]
-    public IActionResult Login([FromBody] LoginModel login)
+    public IActionResult Login([FromBody] LoginRequestDTO login)
     {
       Console.WriteLine($"Login username: {login.Username}");
       var user = GetUser(login.Username);

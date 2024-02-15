@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DiscussionForum.Data;
 using DiscussionForum.Models;
+using backend.Responses;
 
 namespace backend.Controllers
 {
@@ -23,9 +24,9 @@ namespace backend.Controllers
 
         // GET: api/Topic
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TopicDto>>> GetTopics()
+        public async Task<ActionResult<IEnumerable<TopicDTO>>> GetTopics()
         {
-            var topics = await _context.Topics.Select(topic => new TopicDto
+            var topics = await _context.Topics.Select(topic => new TopicDTO
             {
                 Id = topic.Id,
                 Title = topic.Title,
@@ -116,14 +117,5 @@ namespace backend.Controllers
         {
             return _context.Topics.Any(e => e.Id == id);
         }
-    }
-
-    public class TopicDto
-    {
-        public int Id { get; set; }
-        public required string Title { get; set; }
-        public int AccountId { get; set; }
-        public int MessageCount { get; set; }
-        public string? TimeOfLastMessage { get; set; }
     }
 }
